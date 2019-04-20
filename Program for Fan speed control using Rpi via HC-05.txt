@@ -1,0 +1,21 @@
+import RPi.GPIO as GPIO #import GPIO function 
+import time #import time function
+import serial #import serial communcation function
+GPIO.setmode(GPIO.BOARD) #set GPIO as board mode
+ser=serial.Serial(port='/dev/ttyS0',baudrate=9600) # set baudrate = 9600
+GPIO.setup(11,GPIO.OUT) # set pin on 11 as output pin
+p=GPIO.PWM(11,75) # set pin 11 as PWM with 75 frequency
+while 1: 
+	c=ser.read() # store date recived from bluetooth in "c" variable
+	if (c == '0'): 
+		ser.write("FAN IS OFF\n") # send "FAN IS OFF" on bluetooth terminal
+		p.start(0) # start PWM with 0 duty cycle
+	if (c == '1'):
+		ser.write("FAN HAS SPEED OF 25%\n") # send "FAN HAS SPEED OF 25%" on bluetooth terminal
+		p.start(25) # start PWM with 25 duty cycle
+	if (c == '2'):
+		ser.write("FAN HAS SPEED OF 50%\n") # send "FAN HAS SPEED OF 50%" on bluetooth terminal
+		p.start(50) # start PWM with 50 duty cycle
+	if (c == '3'):
+		ser.write("FAN HAS SPEED OF 100%\n") # send "FAN HAS SPEED OF 100%" on bluetooth terminal
+		p.start(100) # start PWM with 100 duty cycle
